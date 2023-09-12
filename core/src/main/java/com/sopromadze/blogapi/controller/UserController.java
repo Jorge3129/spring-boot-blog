@@ -37,12 +37,6 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private PostService postService;
-
-	@Autowired
-	private AlbumService albumService;
-
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<UserSummary> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
@@ -69,25 +63,6 @@ public class UserController {
 		UserProfile userProfile = userService.getUserProfile(username);
 
 		return new ResponseEntity< >(userProfile, HttpStatus.OK);
-	}
-
-	@GetMapping("/{username}/posts")
-	public ResponseEntity<PagedResponse<Post>> getPostsCreatedBy(@PathVariable(value = "username") String username,
-			@RequestParam(value = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
-			@RequestParam(value = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size) {
-		PagedResponse<Post> response = postService.getPostsByCreatedBy(username, page, size);
-
-		return new ResponseEntity<  >(response, HttpStatus.OK);
-	}
-
-	@GetMapping("/{username}/albums")
-	public ResponseEntity<PagedResponse<Album>> getUserAlbums(@PathVariable(name = "username") String username,
-			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
-			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size) {
-
-		PagedResponse<Album> response = albumService.getUserAlbums(username, page, size);
-
-		return new ResponseEntity<  >(response, HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -140,5 +115,4 @@ public class UserController {
 
 		return new ResponseEntity< >(userProfile, HttpStatus.OK);
 	}
-
 }
