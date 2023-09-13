@@ -2,7 +2,6 @@ package com.sopromadze.blogapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sopromadze.blogapi.model.audit.UserDateAudit;
-import com.sopromadze.blogapi.model.user.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -52,9 +51,8 @@ public class Comment extends UserDateAudit {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
 
     public Comment(@NotBlank @Size(min = 10, message = "Comment body must be minimum 10 characters") String body) {
         this.body = body;
@@ -63,10 +61,5 @@ public class Comment extends UserDateAudit {
     @JsonIgnore
     public Post getPost() {
         return post;
-    }
-
-    @JsonIgnore
-    public User getUser() {
-        return user;
     }
 }

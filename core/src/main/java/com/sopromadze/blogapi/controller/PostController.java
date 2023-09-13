@@ -3,11 +3,11 @@ package com.sopromadze.blogapi.controller;
 import com.sopromadze.blogapi.model.Post;
 import com.sopromadze.blogapi.payload.PostRequest;
 import com.sopromadze.blogapi.payload.PostResponse;
-import com.sopromadze.blogapi.security.CurrentUser;
-import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.PostService;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.security.CurrentUser;
+import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,8 +80,11 @@ public class PostController {
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<Post> updatePost(@PathVariable(name = "id") Long id,
-			@Valid @RequestBody PostRequest newPostRequest, @CurrentUser UserPrincipal currentUser) {
+	public ResponseEntity<Post> updatePost(
+			@PathVariable(name = "id") Long id,
+			@Valid @RequestBody PostRequest newPostRequest,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		Post post = postService.updatePost(id, newPostRequest, currentUser);
 
 		return new ResponseEntity< >(post, HttpStatus.OK);
@@ -89,7 +92,10 @@ public class PostController {
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<ApiResponse> deletePost(@PathVariable(name = "id") Long id, @CurrentUser UserPrincipal currentUser) {
+	public ResponseEntity<ApiResponse> deletePost(
+			@PathVariable(name = "id") Long id,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		ApiResponse apiResponse = postService.deletePost(id, currentUser);
 
 		return new ResponseEntity< >(apiResponse, HttpStatus.OK);

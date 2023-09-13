@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.sopromadze.blogapi.model.audit.UserDateAudit;
-import com.sopromadze.blogapi.model.user.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -44,9 +43,8 @@ public class Post extends UserDateAudit {
 	@Column(name = "body")
 	private String body;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
-	private User user;
+	@Column(name = "user_id")
+	private Long userId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id")
@@ -59,15 +57,6 @@ public class Post extends UserDateAudit {
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "post_tag", joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
 	private List<Tag> tags;
-
-	@JsonIgnore
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 
 	public List<Comment> getComments() {
 		return comments == null ? null : new ArrayList<>(comments);

@@ -2,11 +2,11 @@ package com.sopromadze.blogapi.controller;
 
 import com.sopromadze.blogapi.model.Comment;
 import com.sopromadze.blogapi.payload.CommentRequest;
-import com.sopromadze.blogapi.security.CurrentUser;
-import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.CommentService;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.security.CurrentUser;
+import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,10 +63,12 @@ public class CommentController {
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<Comment> updateComment(@PathVariable(name = "postId") Long postId,
-			@PathVariable(name = "id") Long id, @Valid @RequestBody CommentRequest commentRequest,
-			@CurrentUser UserPrincipal currentUser) {
-
+	public ResponseEntity<Comment> updateComment(
+			@PathVariable(name = "postId") Long postId,
+			@PathVariable(name = "id") Long id,
+			@Valid @RequestBody CommentRequest commentRequest,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		Comment updatedComment = commentService.updateComment(postId, id, commentRequest, currentUser);
 
 		return new ResponseEntity<>(updatedComment, HttpStatus.OK);

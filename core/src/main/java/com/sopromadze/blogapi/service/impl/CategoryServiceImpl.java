@@ -1,14 +1,14 @@
 package com.sopromadze.blogapi.service.impl;
 
 import com.sopromadze.blogapi.model.Category;
-import com.sopromadze.blogapi.model.role.RoleName;
 import com.sopromadze.blogapi.repository.CategoryRepository;
-import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.CategoryService;
 import com.sopromadze.exception.ResourceNotFoundException;
 import com.sopromadze.exception.UnauthorizedException;
+import com.sopromadze.model.role.RoleName;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

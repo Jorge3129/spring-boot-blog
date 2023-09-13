@@ -3,21 +3,21 @@ package com.sopromadze.blogapi.service.impl;
 import com.sopromadze.blogapi.model.Category;
 import com.sopromadze.blogapi.model.Post;
 import com.sopromadze.blogapi.model.Tag;
-import com.sopromadze.blogapi.model.role.RoleName;
-import com.sopromadze.blogapi.model.user.User;
 import com.sopromadze.blogapi.payload.PostRequest;
 import com.sopromadze.blogapi.payload.PostResponse;
 import com.sopromadze.blogapi.repository.CategoryRepository;
 import com.sopromadze.blogapi.repository.PostRepository;
 import com.sopromadze.blogapi.repository.TagRepository;
-import com.sopromadze.blogapi.repository.UserRepository;
-import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.PostService;
 import com.sopromadze.exception.BadRequestException;
 import com.sopromadze.exception.ResourceNotFoundException;
 import com.sopromadze.exception.UnauthorizedException;
+import com.sopromadze.model.role.RoleName;
+import com.sopromadze.model.user.User;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.repository.UserRepository;
+import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppConstants;
 import com.sopromadze.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +116,7 @@ public class PostServiceImpl implements PostService {
 		Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, ID, id));
 //		Category category = categoryRepository.findById(newPostRequest.getCategoryId())
 //				.orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, newPostRequest.getCategoryId()));
-		if (post.getUser().getId().equals(currentUser.getId())
+		if (post.getUserId().equals(currentUser.getId())
 				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
 			post.setTitle(newPostRequest.getTitle());
 			post.setBody(newPostRequest.getBody());
@@ -131,7 +131,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public ApiResponse deletePost(Long id, UserPrincipal currentUser) {
 		Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(POST, ID, id));
-		if (post.getUser().getId().equals(currentUser.getId())
+		if (post.getUserId().equals(currentUser.getId())
 				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
 			postRepository.deleteById(id);
 			return new ApiResponse(Boolean.TRUE, "You successfully deleted post");
@@ -162,7 +162,7 @@ public class PostServiceImpl implements PostService {
 		post.setBody(postRequest.getBody());
 		post.setTitle(postRequest.getTitle());
 //		post.setCategory(category);
-		post.setUser(user);
+		post.setUserId(user.getId());
 		post.setTags(tags);
 
 		Post newPost = postRepository.save(post);

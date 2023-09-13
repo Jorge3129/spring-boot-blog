@@ -1,9 +1,9 @@
 package com.sopromadze.blogapi.service;
 
 import com.sopromadze.blogapi.model.Todo;
-import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.security.UserPrincipal;
 
 public interface TodoService {
 

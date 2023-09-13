@@ -1,12 +1,12 @@
 package com.sopromadze.blogapi.controller;
 
 import com.sopromadze.blogapi.model.Category;
-import com.sopromadze.blogapi.security.CurrentUser;
-import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.CategoryService;
 import com.sopromadze.exception.UnauthorizedException;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.security.CurrentUser;
+import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +38,10 @@ public class CategoryController {
 
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Category> addCategory(@Valid @RequestBody Category category,
-			@CurrentUser UserPrincipal currentUser) {
-
+	public ResponseEntity<Category> addCategory(
+			@Valid @RequestBody Category category,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		return categoryService.addCategory(category, currentUser);
 	}
 

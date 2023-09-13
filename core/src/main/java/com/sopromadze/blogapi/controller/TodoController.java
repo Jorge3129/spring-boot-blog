@@ -1,11 +1,11 @@
 package com.sopromadze.blogapi.controller;
 
 import com.sopromadze.blogapi.model.Todo;
-import com.sopromadze.blogapi.security.CurrentUser;
-import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.TodoService;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.security.CurrentUser;
+import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

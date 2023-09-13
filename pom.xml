@@ -11,7 +11,9 @@
 		<module>core</module>
 		<module>media</module>
 		<module>shared</module>
-	</modules>
+		<module>security</module>
+      	<module>user</module>
+    </modules>
 	<packaging>pom</packaging>
 
     <name>BlogAPI</name>

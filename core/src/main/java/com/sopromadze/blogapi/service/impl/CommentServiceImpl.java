@@ -2,18 +2,18 @@ package com.sopromadze.blogapi.service.impl;
 
 import com.sopromadze.blogapi.model.Comment;
 import com.sopromadze.blogapi.model.Post;
-import com.sopromadze.blogapi.model.role.RoleName;
-import com.sopromadze.blogapi.model.user.User;
 import com.sopromadze.blogapi.payload.CommentRequest;
 import com.sopromadze.blogapi.repository.CommentRepository;
 import com.sopromadze.blogapi.repository.PostRepository;
-import com.sopromadze.blogapi.repository.UserRepository;
-import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.CommentService;
 import com.sopromadze.exception.BlogapiException;
 import com.sopromadze.exception.ResourceNotFoundException;
+import com.sopromadze.model.role.RoleName;
+import com.sopromadze.model.user.User;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.repository.UserRepository;
+import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -64,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
 				.orElseThrow(() -> new ResourceNotFoundException(POST_STR, ID_STR, postId));
 		User user = userRepository.getUser(currentUser);
 		Comment comment = new Comment(commentRequest.getBody());
-		comment.setUser(user);
+		comment.setUserId(user.getId());
 		comment.setPost(post);
 		comment.setName(currentUser.getUsername());
 		comment.setEmail(currentUser.getEmail());
@@ -96,7 +96,7 @@ public class CommentServiceImpl implements CommentService {
 			throw new BlogapiException(HttpStatus.BAD_REQUEST, COMMENT_DOES_NOT_BELONG_TO_POST);
 		}
 
-		if (comment.getUser().getId().equals(currentUser.getId())
+		if (comment.getUserId().equals(currentUser.getId())
 				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
 			comment.setBody(commentRequest.getBody());
 			return commentRepository.save(comment);
@@ -116,7 +116,7 @@ public class CommentServiceImpl implements CommentService {
 			return new ApiResponse(Boolean.FALSE, COMMENT_DOES_NOT_BELONG_TO_POST);
 		}
 
-		if (comment.getUser().getId().equals(currentUser.getId())
+		if (comment.getUserId().equals(currentUser.getId())
 				|| currentUser.getAuthorities().contains(new SimpleGrantedAuthority(RoleName.ROLE_ADMIN.toString()))) {
 			commentRepository.deleteById(comment.getId());
 			return new ApiResponse(Boolean.TRUE, "You successfully deleted comment");
