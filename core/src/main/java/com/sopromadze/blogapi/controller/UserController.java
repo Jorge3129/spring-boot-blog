@@ -1,20 +1,14 @@
 package com.sopromadze.blogapi.controller;
 
-import com.sopromadze.blogapi.model.Album;
-import com.sopromadze.blogapi.model.Post;
 import com.sopromadze.blogapi.model.user.User;
-import com.sopromadze.blogapi.payload.ApiResponse;
 import com.sopromadze.blogapi.payload.InfoRequest;
-import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.payload.UserIdentityAvailability;
 import com.sopromadze.blogapi.payload.UserProfile;
 import com.sopromadze.blogapi.payload.UserSummary;
 import com.sopromadze.blogapi.security.CurrentUser;
 import com.sopromadze.blogapi.security.UserPrincipal;
-import com.sopromadze.blogapi.service.AlbumService;
-import com.sopromadze.blogapi.service.PostService;
 import com.sopromadze.blogapi.service.UserService;
-import com.sopromadze.blogapi.utils.AppConstants;
+import com.sopromadze.payload.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,7 +79,7 @@ public class UserController {
 	@DeleteMapping("/{username}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<ApiResponse> deleteUser(@PathVariable(value = "username") String username,
-			@CurrentUser UserPrincipal currentUser) {
+																								@CurrentUser UserPrincipal currentUser) {
 		ApiResponse apiResponse = userService.deleteUser(username, currentUser);
 
 		return new ResponseEntity< >(apiResponse, HttpStatus.OK);
@@ -109,8 +103,10 @@ public class UserController {
 
 	@PutMapping("/setOrUpdateInfo")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<UserProfile> setAddress(@CurrentUser UserPrincipal currentUser,
-			@Valid @RequestBody InfoRequest infoRequest) {
+	public ResponseEntity<UserProfile> setAddress(
+			@CurrentUser UserPrincipal currentUser,
+			@Valid @RequestBody InfoRequest infoRequest
+	) {
 		UserProfile userProfile = userService.setOrUpdateInfo(currentUser, infoRequest);
 
 		return new ResponseEntity< >(userProfile, HttpStatus.OK);

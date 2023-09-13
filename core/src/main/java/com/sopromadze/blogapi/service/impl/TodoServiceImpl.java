@@ -1,17 +1,17 @@
 package com.sopromadze.blogapi.service.impl;
 
-import com.sopromadze.blogapi.exception.BadRequestException;
-import com.sopromadze.blogapi.exception.ResourceNotFoundException;
-import com.sopromadze.blogapi.exception.UnauthorizedException;
 import com.sopromadze.blogapi.model.Todo;
 import com.sopromadze.blogapi.model.user.User;
-import com.sopromadze.blogapi.payload.ApiResponse;
-import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.repository.TodoRepository;
 import com.sopromadze.blogapi.repository.UserRepository;
 import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.TodoService;
-import com.sopromadze.blogapi.utils.AppConstants;
+import com.sopromadze.exception.BadRequestException;
+import com.sopromadze.exception.ResourceNotFoundException;
+import com.sopromadze.exception.UnauthorizedException;
+import com.sopromadze.payload.ApiResponse;
+import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import static com.sopromadze.blogapi.utils.AppConstants.CREATED_AT;
-import static com.sopromadze.blogapi.utils.AppConstants.ID;
-import static com.sopromadze.blogapi.utils.AppConstants.TODO;
-import static com.sopromadze.blogapi.utils.AppConstants.YOU_DON_T_HAVE_PERMISSION_TO_MAKE_THIS_OPERATION;
+import static com.sopromadze.utils.AppConstants.*;
 
 @Service
 public class TodoServiceImpl implements TodoService {

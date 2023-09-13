@@ -20,7 +20,6 @@ public class PostRequest {
 	@Size(min = 50)
 	private String body;
 
-	@NotNull
 	private Long categoryId;
 
 	private List<String> tags;

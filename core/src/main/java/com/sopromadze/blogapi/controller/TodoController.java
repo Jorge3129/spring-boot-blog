@@ -1,12 +1,12 @@
 package com.sopromadze.blogapi.controller;
 
 import com.sopromadze.blogapi.model.Todo;
-import com.sopromadze.blogapi.payload.ApiResponse;
-import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.security.CurrentUser;
 import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.TodoService;
-import com.sopromadze.blogapi.utils.AppConstants;
+import com.sopromadze.payload.ApiResponse;
+import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +35,8 @@ public class TodoController {
 	public ResponseEntity<PagedResponse<Todo>> getAllTodos(
 			@CurrentUser UserPrincipal currentUser,
 			@RequestParam(value = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
-			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size) {
-
+			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size
+	) {
 		PagedResponse<Todo> response = todoService.getAllTodos(currentUser, page, size);
 
 		return new ResponseEntity< >(response, HttpStatus.OK);
@@ -44,7 +44,10 @@ public class TodoController {
 
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Todo> addTodo(@Valid @RequestBody Todo todo, @CurrentUser UserPrincipal currentUser) {
+	public ResponseEntity<Todo> addTodo(
+			@Valid @RequestBody Todo todo,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		Todo newTodo = todoService.addTodo(todo, currentUser);
 
 		return new ResponseEntity< >(newTodo, HttpStatus.CREATED);
@@ -52,7 +55,10 @@ public class TodoController {
 
 	@GetMapping("/{id}")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Todo> getTodo(@PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser) {
+	public ResponseEntity<Todo> getTodo(
+			@PathVariable(value = "id") Long id,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		Todo todo = todoService.getTodo(id, currentUser);
 
 		return new ResponseEntity< >(todo, HttpStatus.OK);
@@ -69,7 +75,10 @@ public class TodoController {
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<ApiResponse> deleteTodo(@PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser) {
+	public ResponseEntity<ApiResponse> deleteTodo(
+			@PathVariable(value = "id") Long id,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		ApiResponse apiResponse = todoService.deleteTodo(id, currentUser);
 
 		return new ResponseEntity<>(apiResponse, HttpStatus.OK);
@@ -77,8 +86,10 @@ public class TodoController {
 
 	@PutMapping("/{id}/complete")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Todo> completeTodo(@PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser) {
-
+	public ResponseEntity<Todo> completeTodo(
+			@PathVariable(value = "id") Long id,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		Todo todo = todoService.completeTodo(id, currentUser);
 
 		return new ResponseEntity< >(todo, HttpStatus.OK);
@@ -86,8 +97,10 @@ public class TodoController {
 
 	@PutMapping("/{id}/unComplete")
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Todo> unCompleteTodo(@PathVariable(value = "id") Long id, @CurrentUser UserPrincipal currentUser) {
-
+	public ResponseEntity<Todo> unCompleteTodo(
+			@PathVariable(value = "id") Long id,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		Todo todo = todoService.unCompleteTodo(id, currentUser);
 
 		return new ResponseEntity< >(todo, HttpStatus.OK);

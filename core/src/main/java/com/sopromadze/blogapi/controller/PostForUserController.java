@@ -1,9 +1,9 @@
 package com.sopromadze.blogapi.controller;
 
 import com.sopromadze.blogapi.model.Post;
-import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.service.PostService;
-import com.sopromadze.blogapi.utils.AppConstants;
+import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

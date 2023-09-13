@@ -1,6 +1,6 @@
-package com.sopromadze.blogapi.utils;
+package com.sopromadze.utils;
 
-import com.sopromadze.blogapi.exception.BlogapiException;
+import com.sopromadze.exception.BlogapiException;
 import org.springframework.http.HttpStatus;
 
 public class AppUtils {

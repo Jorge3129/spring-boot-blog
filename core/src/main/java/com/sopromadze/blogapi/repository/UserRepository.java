@@ -1,8 +1,8 @@
 package com.sopromadze.blogapi.repository;
 
-import com.sopromadze.blogapi.exception.ResourceNotFoundException;
 import com.sopromadze.blogapi.model.user.User;
 import com.sopromadze.blogapi.security.UserPrincipal;
+import com.sopromadze.exception.ResourceNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

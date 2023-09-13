@@ -1,17 +1,11 @@
 package com.sopromadze.blogapi.service.impl;
 
-import com.sopromadze.blogapi.exception.AccessDeniedException;
-import com.sopromadze.blogapi.exception.AppException;
-import com.sopromadze.blogapi.exception.BadRequestException;
-import com.sopromadze.blogapi.exception.ResourceNotFoundException;
-import com.sopromadze.blogapi.exception.UnauthorizedException;
 import com.sopromadze.blogapi.model.role.Role;
 import com.sopromadze.blogapi.model.role.RoleName;
 import com.sopromadze.blogapi.model.user.Address;
 import com.sopromadze.blogapi.model.user.Company;
 import com.sopromadze.blogapi.model.user.Geo;
 import com.sopromadze.blogapi.model.user.User;
-import com.sopromadze.blogapi.payload.ApiResponse;
 import com.sopromadze.blogapi.payload.InfoRequest;
 import com.sopromadze.blogapi.payload.UserIdentityAvailability;
 import com.sopromadze.blogapi.payload.UserProfile;
@@ -21,6 +15,8 @@ import com.sopromadze.blogapi.repository.RoleRepository;
 import com.sopromadze.blogapi.repository.UserRepository;
 import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.UserService;
+import com.sopromadze.exception.*;
+import com.sopromadze.payload.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -113,7 +109,6 @@ public class UserServiceImpl implements UserService {
 
 		ApiResponse apiResponse = new ApiResponse(Boolean.FALSE, "You don't have permission to update profile of: " + username);
 		throw new UnauthorizedException(apiResponse);
-
 	}
 
 	@Override

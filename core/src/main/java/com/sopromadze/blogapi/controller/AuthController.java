@@ -1,17 +1,17 @@
 package com.sopromadze.blogapi.controller;
 
-import com.sopromadze.blogapi.exception.AppException;
-import com.sopromadze.blogapi.exception.BlogapiException;
 import com.sopromadze.blogapi.model.role.Role;
 import com.sopromadze.blogapi.model.role.RoleName;
 import com.sopromadze.blogapi.model.user.User;
-import com.sopromadze.blogapi.payload.ApiResponse;
 import com.sopromadze.blogapi.payload.JwtAuthenticationResponse;
 import com.sopromadze.blogapi.payload.LoginRequest;
 import com.sopromadze.blogapi.payload.SignUpRequest;
 import com.sopromadze.blogapi.repository.RoleRepository;
 import com.sopromadze.blogapi.repository.UserRepository;
 import com.sopromadze.blogapi.security.JwtTokenProvider;
+import com.sopromadze.exception.AppException;
+import com.sopromadze.exception.BlogapiException;
+import com.sopromadze.payload.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

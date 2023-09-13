@@ -1,10 +1,10 @@
 package com.sopromadze.blogapi.service;
 
-import com.sopromadze.blogapi.exception.UnauthorizedException;
 import com.sopromadze.blogapi.model.Category;
-import com.sopromadze.blogapi.payload.ApiResponse;
-import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.security.UserPrincipal;
+import com.sopromadze.exception.UnauthorizedException;
+import com.sopromadze.payload.ApiResponse;
+import com.sopromadze.payload.PagedResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface CategoryService {

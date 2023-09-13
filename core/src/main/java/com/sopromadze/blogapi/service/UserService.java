@@ -1,12 +1,12 @@
 package com.sopromadze.blogapi.service;
 
 import com.sopromadze.blogapi.model.user.User;
-import com.sopromadze.blogapi.payload.ApiResponse;
 import com.sopromadze.blogapi.payload.InfoRequest;
 import com.sopromadze.blogapi.payload.UserIdentityAvailability;
 import com.sopromadze.blogapi.payload.UserProfile;
 import com.sopromadze.blogapi.payload.UserSummary;
 import com.sopromadze.blogapi.security.UserPrincipal;
+import com.sopromadze.payload.ApiResponse;
 
 public interface UserService {
 
@@ -29,5 +29,4 @@ public interface UserService {
 	ApiResponse removeAdmin(String username);
 
 	UserProfile setOrUpdateInfo(UserPrincipal currentUser, InfoRequest infoRequest);
-
 }

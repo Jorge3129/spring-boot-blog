@@ -1,4 +1,4 @@
-package com.sopromadze.blogapi.exception;
+package com.sopromadze.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

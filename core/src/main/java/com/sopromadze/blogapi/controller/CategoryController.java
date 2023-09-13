@@ -1,13 +1,13 @@
 package com.sopromadze.blogapi.controller;
 
-import com.sopromadze.blogapi.exception.UnauthorizedException;
 import com.sopromadze.blogapi.model.Category;
-import com.sopromadze.blogapi.payload.ApiResponse;
-import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.security.CurrentUser;
 import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.CategoryService;
-import com.sopromadze.blogapi.utils.AppConstants;
+import com.sopromadze.exception.UnauthorizedException;
+import com.sopromadze.payload.ApiResponse;
+import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,16 +51,20 @@ public class CategoryController {
 
 	@PutMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<Category> updateCategory(@PathVariable(name = "id") Long id,
-			@Valid @RequestBody Category category, @CurrentUser UserPrincipal currentUser) throws UnauthorizedException {
+	public ResponseEntity<Category> updateCategory(
+			@PathVariable(name = "id") Long id,
+			@Valid @RequestBody Category category,
+			@CurrentUser UserPrincipal currentUser
+	) throws UnauthorizedException {
 		return categoryService.updateCategory(id, category, currentUser);
 	}
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<ApiResponse> deleteCategory(@PathVariable(name = "id") Long id,
-			@CurrentUser UserPrincipal currentUser) throws UnauthorizedException {
+	public ResponseEntity<ApiResponse> deleteCategory(
+			@PathVariable(name = "id") Long id,
+			@CurrentUser UserPrincipal currentUser
+	) throws UnauthorizedException {
 		return categoryService.deleteCategory(id, currentUser);
 	}
-
 }

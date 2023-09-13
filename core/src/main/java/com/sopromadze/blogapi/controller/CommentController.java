@@ -1,13 +1,13 @@
 package com.sopromadze.blogapi.controller;
 
 import com.sopromadze.blogapi.model.Comment;
-import com.sopromadze.blogapi.payload.ApiResponse;
 import com.sopromadze.blogapi.payload.CommentRequest;
-import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.security.CurrentUser;
 import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.CommentService;
-import com.sopromadze.blogapi.utils.AppConstants;
+import com.sopromadze.payload.ApiResponse;
+import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +31,11 @@ public class CommentController {
 	private CommentService commentService;
 
 	@GetMapping
-	public ResponseEntity<PagedResponse<Comment>> getAllComments(@PathVariable(name = "postId") Long postId,
+	public ResponseEntity<PagedResponse<Comment>> getAllComments(
+			@PathVariable(name = "postId") Long postId,
 			@RequestParam(name = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
-			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size) {
-
+			@RequestParam(name = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size
+	) {
 		PagedResponse<Comment> allComments = commentService.getAllComments(postId, page, size);
 
 		return new ResponseEntity< >(allComments, HttpStatus.OK);
@@ -42,8 +43,11 @@ public class CommentController {
 
 	@PostMapping
 	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<Comment> addComment(@Valid @RequestBody CommentRequest commentRequest,
-			@PathVariable(name = "postId") Long postId, @CurrentUser UserPrincipal currentUser) {
+	public ResponseEntity<Comment> addComment(
+			@Valid @RequestBody CommentRequest commentRequest,
+			@PathVariable(name = "postId") Long postId,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		Comment newComment = commentService.addComment(commentRequest, postId, currentUser);
 
 		return new ResponseEntity<>(newComment, HttpStatus.CREATED);
@@ -70,9 +74,11 @@ public class CommentController {
 
 	@DeleteMapping("/{id}")
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<ApiResponse> deleteComment(@PathVariable(name = "postId") Long postId,
-			@PathVariable(name = "id") Long id, @CurrentUser UserPrincipal currentUser) {
-
+	public ResponseEntity<ApiResponse> deleteComment(
+			@PathVariable(name = "postId") Long postId,
+			@PathVariable(name = "id") Long id,
+			@CurrentUser UserPrincipal currentUser
+	) {
 		ApiResponse response = commentService.deleteComment(postId, id, currentUser);
 
 		HttpStatus status = response.getSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST;

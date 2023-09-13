@@ -1,14 +1,14 @@
 package com.sopromadze.blogapi.controller;
 
 import com.sopromadze.blogapi.model.Post;
-import com.sopromadze.blogapi.payload.ApiResponse;
-import com.sopromadze.blogapi.payload.PagedResponse;
 import com.sopromadze.blogapi.payload.PostRequest;
 import com.sopromadze.blogapi.payload.PostResponse;
 import com.sopromadze.blogapi.security.CurrentUser;
 import com.sopromadze.blogapi.security.UserPrincipal;
 import com.sopromadze.blogapi.service.PostService;
-import com.sopromadze.blogapi.utils.AppConstants;
+import com.sopromadze.payload.ApiResponse;
+import com.sopromadze.payload.PagedResponse;
+import com.sopromadze.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,8 @@ public class PostController {
 	@GetMapping
 	public ResponseEntity<PagedResponse<Post>> getAllPosts(
 			@RequestParam(value = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
-			@RequestParam(value = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size) {
+			@RequestParam(value = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size
+	) {
 		PagedResponse<Post> response = postService.getAllPosts(page, size);
 
 		return new ResponseEntity< >(response, HttpStatus.OK);
@@ -44,7 +45,8 @@ public class PostController {
 	public ResponseEntity<PagedResponse<Post>> getPostsByCategory(
 			@RequestParam(value = "page", required = false, defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) Integer page,
 			@RequestParam(value = "size", required = false, defaultValue = AppConstants.DEFAULT_PAGE_SIZE) Integer size,
-			@PathVariable(name = "id") Long id) {
+			@PathVariable(name = "id") Long id
+	) {
 		PagedResponse<Post> response = postService.getPostsByCategory(id, page, size);
 
 		return new ResponseEntity< >(response, HttpStatus.OK);

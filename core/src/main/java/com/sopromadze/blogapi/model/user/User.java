@@ -2,7 +2,6 @@ package com.sopromadze.blogapi.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sopromadze.blogapi.model.Album;
 import com.sopromadze.blogapi.model.audit.DateAudit;
 import com.sopromadze.blogapi.model.Comment;
 import com.sopromadze.blogapi.model.Post;
@@ -96,10 +95,6 @@ public class User extends DateAudit {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Album> albums;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Post> posts;
 
 	@JsonIgnore
@@ -118,15 +113,11 @@ public class User extends DateAudit {
 		this.password = password;
 	}
 
-
-
 	public List<Todo> getTodos() {
-
 		return todos == null ? null : new ArrayList<>(todos);
 	}
 
 	public void setTodos(List<Todo> todos) {
-
 		if (todos == null) {
 			this.todos = null;
 		} else {
@@ -134,28 +125,11 @@ public class User extends DateAudit {
 		}
 	}
 
-	public List<Album> getAlbums() {
-
-		return albums == null ? null : new ArrayList<>(albums);
-	}
-
-	public void setAlbums(List<Album> albums) {
-
-		if (albums == null) {
-			this.albums = null;
-		} else {
-			this.albums = Collections.unmodifiableList(albums);
-		}
-	}
-
-
 	public List<Post> getPosts() {
-
 		return posts == null ? null : new ArrayList<>(posts);
 	}
 
 	public void setPosts(List<Post> posts) {
-
 		if (posts == null) {
 			this.posts = null;
 		} else {
@@ -164,12 +138,10 @@ public class User extends DateAudit {
 	}
 
 	public List<Role> getRoles() {
-
 		return roles == null ? null : new ArrayList<>(roles);
 	}
 
 	public void setRoles(List<Role> roles) {
-
 		if (roles == null) {
 			this.roles = null;
 		} else {
@@ -182,7 +154,6 @@ public class User extends DateAudit {
 	}
 
 	public void setComments(List<Comment> comments) {
-
 		if (comments == null) {
 			this.comments = null;
 		} else {

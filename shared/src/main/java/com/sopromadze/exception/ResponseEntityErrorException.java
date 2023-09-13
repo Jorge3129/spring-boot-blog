@@ -1,6 +1,6 @@
-package com.sopromadze.blogapi.exception;
+package com.sopromadze.exception;
 
-import com.sopromadze.blogapi.payload.ApiResponse;
+import com.sopromadze.payload.ApiResponse;
 import org.springframework.http.ResponseEntity;
 
 public class ResponseEntityErrorException extends RuntimeException {
