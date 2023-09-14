@@ -1,4 +1,4 @@
-package com.sopromadze.blogapi.payload;
+package com.sopromadze.payload;
 
 import lombok.Data;
 

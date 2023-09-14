@@ -1,7 +1,6 @@
 package com.sopromadze.security;
 
-import com.sopromadze.repository.UserRepository;
-import com.sopromadze.service.CustomUserDetailsServiceImpl;
+import com.sopromadze.service.impl.CustomUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

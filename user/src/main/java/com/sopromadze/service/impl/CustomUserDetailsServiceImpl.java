@@ -1,8 +1,9 @@
-package com.sopromadze.service;
+package com.sopromadze.service.impl;
 
 import com.sopromadze.model.user.User;
 import com.sopromadze.repository.UserRepository;
 import com.sopromadze.security.UserPrincipal;
+import com.sopromadze.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

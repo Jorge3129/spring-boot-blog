@@ -1,14 +1,15 @@
-package com.sopromadze.blogapi.controller;
+package com.sopromadze.controller;
 
-import com.sopromadze.blogapi.payload.JwtAuthenticationResponse;
-import com.sopromadze.blogapi.payload.LoginRequest;
-import com.sopromadze.blogapi.payload.SignUpRequest;
+
 import com.sopromadze.exception.AppException;
 import com.sopromadze.exception.BlogapiException;
 import com.sopromadze.model.role.Role;
 import com.sopromadze.model.role.RoleName;
 import com.sopromadze.model.user.User;
 import com.sopromadze.payload.ApiResponse;
+import com.sopromadze.payload.JwtAuthenticationResponse;
+import com.sopromadze.payload.LoginRequest;
+import com.sopromadze.payload.SignUpRequest;
 import com.sopromadze.repository.RoleRepository;
 import com.sopromadze.repository.UserRepository;
 import com.sopromadze.security.JwtTokenProvider;
@@ -52,9 +53,15 @@ public class AuthController {
 	private JwtTokenProvider jwtTokenProvider;
 
 	@PostMapping("/signin")
-	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<JwtAuthenticationResponse> authenticateUser(
+			@Valid @RequestBody LoginRequest loginRequest
+	) {
 		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmail(), loginRequest.getPassword()));
+				new UsernamePasswordAuthenticationToken(
+						loginRequest.getUsernameOrEmail(),
+						loginRequest.getPassword()
+				)
+		);
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
