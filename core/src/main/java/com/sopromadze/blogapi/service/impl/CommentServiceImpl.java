@@ -9,10 +9,8 @@ import com.sopromadze.blogapi.service.CommentService;
 import com.sopromadze.exception.BlogapiException;
 import com.sopromadze.exception.ResourceNotFoundException;
 import com.sopromadze.model.role.RoleName;
-import com.sopromadze.model.user.User;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
-import com.sopromadze.repository.UserRepository;
 import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +42,6 @@ public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private PostRepository postRepository;
 
-	@Autowired
-	private UserRepository userRepository;
-
 	@Override
 	public PagedResponse<Comment> getAllComments(Long postId, int page, int size) {
 		AppUtils.validatePageNumberAndSize(page, size);
@@ -62,9 +57,8 @@ public class CommentServiceImpl implements CommentService {
 	public Comment addComment(CommentRequest commentRequest, Long postId, UserPrincipal currentUser) {
 		Post post = postRepository.findById(postId)
 				.orElseThrow(() -> new ResourceNotFoundException(POST_STR, ID_STR, postId));
-		User user = userRepository.getUser(currentUser);
 		Comment comment = new Comment(commentRequest.getBody());
-		comment.setUserId(user.getId());
+		comment.setUserId(currentUser.getId());
 		comment.setPost(post);
 		comment.setName(currentUser.getUsername());
 		comment.setEmail(currentUser.getEmail());

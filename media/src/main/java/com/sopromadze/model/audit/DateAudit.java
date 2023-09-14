@@ -30,5 +30,4 @@ public abstract class DateAudit implements Serializable {
 	@LastModifiedDate
 	@Column(nullable = false)
 	private Instant updatedAt;
-
 }

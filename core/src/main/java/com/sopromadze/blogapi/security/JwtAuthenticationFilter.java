@@ -1,4 +1,4 @@
-package com.sopromadze.security;
+package com.sopromadze.blogapi.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

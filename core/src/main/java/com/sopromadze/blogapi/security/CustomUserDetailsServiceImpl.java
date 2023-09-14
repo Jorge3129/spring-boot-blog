@@ -1,9 +1,7 @@
-package com.sopromadze.service.impl;
+package com.sopromadze.blogapi.security;
 
 import com.sopromadze.model.user.User;
-import com.sopromadze.repository.UserRepository;
 import com.sopromadze.security.UserPrincipal;
-import com.sopromadze.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsServiceImpl implements UserDetailsService, CustomUserDetailsService {
 	@Autowired(required = false)
-	private UserRepository userRepository;
+	private UserHttpService userRepository;
 
 	@Override
 	@Transactional

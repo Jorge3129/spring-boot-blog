@@ -1,4 +1,4 @@
-package com.sopromadze.service;
+package com.sopromadze.blogapi.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

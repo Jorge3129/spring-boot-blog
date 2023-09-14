@@ -8,15 +8,14 @@ import com.sopromadze.blogapi.payload.PostResponse;
 import com.sopromadze.blogapi.repository.CategoryRepository;
 import com.sopromadze.blogapi.repository.PostRepository;
 import com.sopromadze.blogapi.repository.TagRepository;
+import com.sopromadze.blogapi.security.UserHttpService;
 import com.sopromadze.blogapi.service.PostService;
 import com.sopromadze.exception.BadRequestException;
 import com.sopromadze.exception.ResourceNotFoundException;
 import com.sopromadze.exception.UnauthorizedException;
 import com.sopromadze.model.role.RoleName;
-import com.sopromadze.model.user.User;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
-import com.sopromadze.repository.UserRepository;
 import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.utils.AppConstants;
 import com.sopromadze.utils.AppUtils;
@@ -37,7 +36,6 @@ import static com.sopromadze.utils.AppConstants.CREATED_AT;
 import static com.sopromadze.utils.AppConstants.ID;
 import static com.sopromadze.utils.AppConstants.POST;
 import static com.sopromadze.utils.AppConstants.TAG;
-import static com.sopromadze.utils.AppConstants.USER;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -45,7 +43,7 @@ public class PostServiceImpl implements PostService {
 	private PostRepository postRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserHttpService userService;
 
 	@Autowired
 	private CategoryRepository categoryRepository;
@@ -70,9 +68,9 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public PagedResponse<Post> getPostsByCreatedBy(String username, int page, int size) {
 		validatePageNumberAndSize(page, size);
-		User user = userRepository.getUserByName(username);
+		Long userId = userService.getUserIdByUsername(username);
 		Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, CREATED_AT);
-		Page<Post> posts = postRepository.findByCreatedBy(user.getId(), pageable);
+		Page<Post> posts = postRepository.findByCreatedBy(userId, pageable);
 
 		List<Post> content = posts.getNumberOfElements() == 0 ? Collections.emptyList() : posts.getContent();
 
@@ -144,8 +142,6 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostResponse addPost(PostRequest postRequest, UserPrincipal currentUser) {
-		User user = userRepository.findById(currentUser.getId())
-				.orElseThrow(() -> new ResourceNotFoundException(USER, ID, 1L));
 //		Category category = categoryRepository.findById(postRequest.getCategoryId())
 //				.orElseThrow(() -> new ResourceNotFoundException(CATEGORY, ID, postRequest.getCategoryId()));
 
@@ -162,7 +158,7 @@ public class PostServiceImpl implements PostService {
 		post.setBody(postRequest.getBody());
 		post.setTitle(postRequest.getTitle());
 //		post.setCategory(category);
-		post.setUserId(user.getId());
+		post.setUserId(currentUser.getId());
 		post.setTags(tags);
 
 		Post newPost = postRepository.save(post);

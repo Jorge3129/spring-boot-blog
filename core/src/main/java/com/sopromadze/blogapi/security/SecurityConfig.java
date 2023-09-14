@@ -1,4 +1,4 @@
-package com.sopromadze.security;
+package com.sopromadze.blogapi.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

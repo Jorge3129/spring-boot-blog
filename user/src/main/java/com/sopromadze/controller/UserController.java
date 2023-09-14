@@ -2,6 +2,7 @@ package com.sopromadze.controller;
 
 import com.sopromadze.model.user.User;
 import com.sopromadze.payload.*;
+import com.sopromadze.repository.UserRepository;
 import com.sopromadze.security.CurrentUser;
 import com.sopromadze.security.UserPrincipal;
 import com.sopromadze.service.UserService;
@@ -24,102 +25,140 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	@Autowired
-	private UserService userService;
+  @Autowired
+  private UserService userService;
 
-	@GetMapping("/me")
-	@PreAuthorize("hasRole('USER')")
-	public ResponseEntity<UserSummary> getCurrentUser(
-			@CurrentUser UserPrincipal currentUser
-	) {
-		UserSummary userSummary = userService.getCurrentUser(currentUser);
+  @Autowired
+  private UserRepository userRepository;
 
-		return new ResponseEntity< >(userSummary, HttpStatus.OK);
-	}
+  @GetMapping("/me")
+  @PreAuthorize("hasRole('USER')")
+  public ResponseEntity<UserSummary> getCurrentUser(
+      @CurrentUser UserPrincipal currentUser
+  ) {
+    UserSummary userSummary = userService.getCurrentUser(currentUser);
 
-	@GetMapping("/checkUsernameAvailability")
-	public ResponseEntity<UserIdentityAvailability> checkUsernameAvailability(
-			@RequestParam(value = "username") String username
-	) {
-		UserIdentityAvailability userIdentityAvailability = userService.checkUsernameAvailability(username);
+    return new ResponseEntity<>(userSummary, HttpStatus.OK);
+  }
 
-		return new ResponseEntity< >(userIdentityAvailability, HttpStatus.OK);
-	}
+  @GetMapping("/checkUsernameAvailability")
+  public ResponseEntity<UserIdentityAvailability> checkUsernameAvailability(
+      @RequestParam(value = "username") String username
+  ) {
+    UserIdentityAvailability userIdentityAvailability = userService.checkUsernameAvailability(username);
 
-	@GetMapping("/checkEmailAvailability")
-	public ResponseEntity<UserIdentityAvailability> checkEmailAvailability(
-			@RequestParam(value = "email") String email
-	) {
-		UserIdentityAvailability userIdentityAvailability = userService.checkEmailAvailability(email);
-		return new ResponseEntity< >(userIdentityAvailability, HttpStatus.OK);
-	}
+    return new ResponseEntity<>(userIdentityAvailability, HttpStatus.OK);
+  }
 
-	@GetMapping("/{username}/profile")
-	public ResponseEntity<UserProfile> getUSerProfile(
-			@PathVariable(value = "username") String username
-	) {
-		UserProfile userProfile = userService.getUserProfile(username);
+  @GetMapping("/checkEmailAvailability")
+  public ResponseEntity<UserIdentityAvailability> checkEmailAvailability(
+      @RequestParam(value = "email") String email
+  ) {
+    UserIdentityAvailability userIdentityAvailability = userService.checkEmailAvailability(email);
+    return new ResponseEntity<>(userIdentityAvailability, HttpStatus.OK);
+  }
 
-		return new ResponseEntity< >(userProfile, HttpStatus.OK);
-	}
+  @GetMapping("/get-by-id/{userId}")
+  public ResponseEntity<User> getUserById(
+      @PathVariable(value = "userId") Long userId
+  ) {
+    var user = userRepository.findById(userId);
 
-	@PostMapping
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<User> addUser(
-			@Valid @RequestBody User user
-	) {
-		User newUser = userService.addUser(user);
+    if (user.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
-		return new ResponseEntity< >(newUser, HttpStatus.CREATED);
-	}
+    return new ResponseEntity<>(user.get(), HttpStatus.OK);
+  }
 
-	@PutMapping("/{username}")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<User> updateUser(
-			@Valid @RequestBody User newUser,
-			@PathVariable(value = "username") String username,
-			@CurrentUser UserPrincipal currentUser
-	) {
-		User updatedUSer = userService.updateUser(newUser, username, currentUser);
+  @GetMapping("/get-by-username/{username}")
+  public ResponseEntity<User> getUserByNameOrEmail(
+      @PathVariable(value = "username") String username
+  ) {
+    var user = userRepository.findByUsernameOrEmail(username, username);
 
-		return new ResponseEntity< >(updatedUSer, HttpStatus.CREATED);
-	}
+    if (user.isEmpty()) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
-	@DeleteMapping("/{username}")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<ApiResponse> deleteUser(
-			@PathVariable(value = "username") String username,
-			@CurrentUser UserPrincipal currentUser
-	) {
-		ApiResponse apiResponse = userService.deleteUser(username, currentUser);
+    return new ResponseEntity<>(user.get(), HttpStatus.OK);
+  }
 
-		return new ResponseEntity< >(apiResponse, HttpStatus.OK);
-	}
+  @GetMapping("/profile-by-username/{username}")
+  public ResponseEntity<UserProfile> getUserProfile(
+      @PathVariable(value = "username") String username
+  ) {
+    UserProfile userProfile = userService.getUserProfile(username);
 
-	@PutMapping("/{username}/giveAdmin")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<ApiResponse> giveAdmin(@PathVariable(name = "username") String username) {
-		ApiResponse apiResponse = userService.giveAdmin(username);
+    return new ResponseEntity<>(userProfile, HttpStatus.OK);
+  }
 
-		return new ResponseEntity< >(apiResponse, HttpStatus.OK);
-	}
+  @GetMapping("/id-by-username/{username}")
+  public ResponseEntity<Long> getUserId(
+      @PathVariable(value = "username") String username
+  ) {
+    UserProfile userProfile = userService.getUserProfile(username);
 
-	@PutMapping("/{username}/takeAdmin")
-	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<ApiResponse> takeAdmin(@PathVariable(name = "username") String username) {
-		ApiResponse apiResponse = userService.removeAdmin(username);
+    return new ResponseEntity<>(userProfile.getId(), HttpStatus.OK);
+  }
 
-		return new ResponseEntity< >(apiResponse, HttpStatus.OK);
-	}
+  @PostMapping
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<User> addUser(
+      @Valid @RequestBody User user
+  ) {
+    User newUser = userService.addUser(user);
 
-	@PutMapping("/setOrUpdateInfo")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public ResponseEntity<UserProfile> setAddress(
-			@CurrentUser UserPrincipal currentUser,
-			@Valid @RequestBody InfoRequest infoRequest
-	) {
-		UserProfile userProfile = userService.setOrUpdateInfo(currentUser, infoRequest);
+    return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+  }
 
-		return new ResponseEntity< >(userProfile, HttpStatus.OK);
-	}
+  @PutMapping("/{username}")
+  @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+  public ResponseEntity<User> updateUser(
+      @Valid @RequestBody User newUser,
+      @PathVariable(value = "username") String username,
+      @CurrentUser UserPrincipal currentUser
+  ) {
+    User updatedUSer = userService.updateUser(newUser, username, currentUser);
+
+    return new ResponseEntity<>(updatedUSer, HttpStatus.CREATED);
+  }
+
+  @DeleteMapping("/{username}")
+  @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+  public ResponseEntity<ApiResponse> deleteUser(
+      @PathVariable(value = "username") String username,
+      @CurrentUser UserPrincipal currentUser
+  ) {
+    ApiResponse apiResponse = userService.deleteUser(username, currentUser);
+
+    return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+  }
+
+  @PutMapping("/{username}/giveAdmin")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<ApiResponse> giveAdmin(@PathVariable(name = "username") String username) {
+    ApiResponse apiResponse = userService.giveAdmin(username);
+
+    return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+  }
+
+  @PutMapping("/{username}/takeAdmin")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<ApiResponse> takeAdmin(@PathVariable(name = "username") String username) {
+    ApiResponse apiResponse = userService.removeAdmin(username);
+
+    return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+  }
+
+  @PutMapping("/setOrUpdateInfo")
+  @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+  public ResponseEntity<UserProfile> setAddress(
+      @CurrentUser UserPrincipal currentUser,
+      @Valid @RequestBody InfoRequest infoRequest
+  ) {
+    UserProfile userProfile = userService.setOrUpdateInfo(currentUser, infoRequest);
+
+    return new ResponseEntity<>(userProfile, HttpStatus.OK);
+  }
 }
