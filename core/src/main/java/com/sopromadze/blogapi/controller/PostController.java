@@ -3,6 +3,7 @@ package com.sopromadze.blogapi.controller;
 import com.sopromadze.blogapi.model.Post;
 import com.sopromadze.blogapi.payload.PostRequest;
 import com.sopromadze.blogapi.payload.PostResponse;
+import com.sopromadze.blogapi.repository.PostRepository;
 import com.sopromadze.blogapi.service.PostService;
 import com.sopromadze.payload.ApiResponse;
 import com.sopromadze.payload.PagedResponse;
@@ -30,6 +31,9 @@ import javax.validation.Valid;
 public class PostController {
 	@Autowired
 	private PostService postService;
+
+	@Autowired
+	private PostRepository postRepository;
 
 	@GetMapping
 	public ResponseEntity<PagedResponse<Post>> getAllPosts(
@@ -60,6 +64,13 @@ public class PostController {
 		PagedResponse<Post> response = postService.getPostsByTag(id, page, size);
 
 		return new ResponseEntity< >(response, HttpStatus.OK);
+	}
+
+	@GetMapping("/count-by-created-by/{userId}")
+	public ResponseEntity<Long> countByCreatedBy(
+			@PathVariable(name = "userId") Long userId
+	) {
+		return new ResponseEntity<>(postRepository.countByCreatedBy(userId), HttpStatus.OK);
 	}
 
 	@PostMapping

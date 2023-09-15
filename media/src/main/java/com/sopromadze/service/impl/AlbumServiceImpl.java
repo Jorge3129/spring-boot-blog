@@ -88,7 +88,7 @@ public class AlbumServiceImpl implements AlbumService {
 		modelMapper.map(albumRequest, album);
 
 		album.setUserId(currentUser.getId());
-		Album newAlbum = albumRepository.save(album);
+		Album newAlbum = albumRepository.saveAndFlush(album);
 		return new ResponseEntity<>(newAlbum, HttpStatus.CREATED);
 	}
 

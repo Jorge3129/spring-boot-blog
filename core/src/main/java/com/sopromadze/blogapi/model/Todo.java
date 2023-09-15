@@ -1,6 +1,6 @@
 package com.sopromadze.blogapi.model;
 
-import com.sopromadze.blogapi.model.audit.UserDateAudit;
+import com.sopromadze.model.audit.UserDateAudit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

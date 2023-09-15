@@ -3,7 +3,7 @@ package com.sopromadze.blogapi.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.sopromadze.blogapi.model.audit.UserDateAudit;
+import com.sopromadze.model.audit.UserDateAudit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

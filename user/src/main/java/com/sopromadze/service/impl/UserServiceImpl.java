@@ -11,6 +11,7 @@ import com.sopromadze.payload.*;
 import com.sopromadze.repository.RoleRepository;
 import com.sopromadze.repository.UserRepository;
 import com.sopromadze.security.UserPrincipal;
+import com.sopromadze.service.PostHttpService;
 import com.sopromadze.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-//	@Autowired
-//	private PostRepository postRepository;
+	@Autowired
+	private PostHttpService postRepository;
 
 	@Autowired
 	private RoleRepository roleRepository;
@@ -59,9 +60,7 @@ public class UserServiceImpl implements UserService {
 	public UserProfile getUserProfile(String username) {
 		User user = userRepository.getUserByName(username);
 
-   //	TODO	Long postCount = postRepository.countByCreatedBy(user.getId());
-
-		Long postCount = 0L;
+		Long postCount = postRepository.countByCreatedBy(user.getId());
 
 		return new UserProfile(
 				user.getId(), user.getUsername(),
@@ -168,9 +167,7 @@ public class UserServiceImpl implements UserService {
 			user.setPhone(infoRequest.getPhone());
 			User updatedUser = userRepository.save(user);
 
-      //	TODO		Long postCount = postRepository.countByCreatedBy(updatedUser.getId());
-
-			Long postCount = 0L;
+      Long postCount = postRepository.countByCreatedBy(updatedUser.getId());
 
 			return new UserProfile(updatedUser.getId(), updatedUser.getUsername(),
 					updatedUser.getFirstName(), updatedUser.getLastName(), updatedUser.getCreatedAt(),
